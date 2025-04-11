@@ -14,6 +14,7 @@ const INIT_OPTIONS = [
 ];
 
 function App() {
+  // setup main state for response data (aggregated "client-side" for visualizations)
   const [responses, setResponses] = useState([]);
 
   // FUTURE ENHANCEMENT: replace basic state management with redux toolkit
@@ -235,7 +236,7 @@ function App() {
               </Card>
             </div>
             <h2 className="text-2xl font-bold text-center">
-              {responses.length} responses
+              {responses.length > 0 ? `${responses.length} responses` : null}
             </h2>
             <div className="px-4 lg:px-6">
               {responses.length > 0 && (

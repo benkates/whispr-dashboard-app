@@ -28,6 +28,7 @@ const addDuplicateFlag = (arr: SentenceObject[]): SentenceObject[] => {
   });
 };
 
+// main fetch data function: fetch csv data from public folder
 const fetchData = async () => {
   try {
     const response = await fetch("/data/us_ai_survey_unique_50.csv");
@@ -61,6 +62,7 @@ const fetchData = async () => {
   }
 };
 
+// fetch data based on filters (exposed to App.tsx)
 export const fetchSurveyResponses = (filters) => {
   return new Promise((resolve) => {
     setTimeout(async () => {

@@ -1,54 +1,48 @@
-# React + TypeScript + Vite
+# Whispr Dashbaord App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ben Kates, April 2025
 
-Currently, two official plugins are available:
+## Setup and Preview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Run `npm run install` to install the required packages.
+Run `npm run dev` to start the development server.
+Run `npm run build` to build the app for production.
+Run `npm run preview` to preview the production build.
 
-## Expanding the ESLint configuration
+## Tools
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This application makes use of React, TypeScript, Tailwind, [shadcn/ui](https://ui.shadcn.com/), and [ApexCharts](https://apexcharts.com/react-chart-demos/). Typescript is largely ignored in the interest of time.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+In the interest of time, the following decisions were made:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- `shadcn/ui` components use default component styling
+- No Tailwind implementation of design spec from Figma document
+- ApexCharts vs. a custom d3.js approach (allow for more customization)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Note about `shadcn/ui`
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+`[shadcn/ui](https://ui.shadcn.com/)` is a collection of components built on top of Radix UI and Tailwind CSS. It provides a set of accessible and responsive pre-designed components that can be easily customized and used in a React applications. `src/components/ui` contains the generated components.
+
+\*\*You can check out examples of my custom CSS/HTML/component work [on my portfolio](https://benkates.com/).
+
+## Technical Implementation
+
+### Fake API
+
+The `src/fakeApi.ts` file contains a fake API that simulates the behavior of a real, dynamically called API. It makes a real fetch request to the provided csv file in the `public` directory based on the app's filters.
+
+### Bot Detection
+
+In the fake API call is the addition of a field that detects if the Q3 open ended response is a duplicate, signaling that it is a bot. This is a _very_ basic bot detection algorithm to provide a filter option in the application. In the future, this could "facet" the Question 2 visualization (aligned with the Figma spec).
+
+### State Management
+
+A very basic (long) `useState` + `useEffect` list is used in the `App.tsx` to reduce dev time. With more time, a state management library like Redux or Zustand could be implemented.
+
+## Performance Optimization Thoughts for Larger Datasets
+
+- Bring back summarized datasets (instead of rows + grouping on the frontend)
+- Work with backend team on tying API endpoints to visualization forms based on chart type and data required
+- Canvas-based visualizations instead of SVG if rendering many nodes
+- Server-side rendering (SSR) of frontend elements when appropriate
+- Debounce API calls and allow for pagination/caching

@@ -46,6 +46,7 @@ export const VerticalBarChart = ({ data, questionId }) => {
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
+    // config for apex chart (based on dropdown)
     setFilteredConfig({
       series: [{ data: chartData.map((d) => d.count) }],
       options: {

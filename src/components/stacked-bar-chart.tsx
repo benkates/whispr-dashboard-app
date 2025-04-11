@@ -24,6 +24,7 @@ export const StackedBarChart = ({ data, questionId }) => {
     };
   });
 
+  // config for apex chart
   const CONFIG = {
     series: chartData,
     options: {
