@@ -4,6 +4,7 @@ import "./App.css";
 import { fetchSurveyResponses, getUniqueValues } from "./fakeApi";
 import { MultiSelect } from "@/components/ui/combobox-multi";
 import { StackedBarChart } from "./components/stacked-bar-chart";
+import { VerticalBarChart } from "./components/vertical-bar-chart";
 
 const INIT_OPTIONS = [
   { value: "apple", label: "Apple" },
@@ -123,6 +124,7 @@ function App() {
                   <StackedBarChart data={responses} questionId="q2_rating" />
                   <hr />
                   <h3>Question 3</h3>
+                  <VerticalBarChart data={responses} questionId="q3_open" />
                 </Card>
               )}
             </div>
