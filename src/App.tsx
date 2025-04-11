@@ -16,6 +16,10 @@ function App() {
   const [responses, setResponses] = useState([]);
 
   // FUTURE ENHANCEMENT: replace basic state management with redux toolkit
+  const [selectedBotDetection, setSelectedBotDetection] = useState<string[]>(
+    []
+  );
+
   const [selectedAgeGroup, setSelectedAgeGroup] = useState<string[]>([]);
   const [selectedAgeGroupOptions, setSelectedAgeGroupOptions] =
     useState<object[]>(INIT_OPTIONS);
@@ -63,14 +67,15 @@ function App() {
   useEffect(() => {
     const loadFilteredData = async () => {
       const filteredResponses = await fetchSurveyResponses({
-        gender: selectedGender,
+        botDetection: selectedBotDetection,
         ageGroup: selectedAgeGroup,
+        gender: selectedGender,
       });
       setResponses(filteredResponses);
     };
 
     loadFilteredData();
-  }, [selectedGender, selectedAgeGroup]);
+  }, [selectedBotDetection, selectedAgeGroup, selectedGender]);
 
   return (
     <>
@@ -80,6 +85,26 @@ function App() {
             {/* parent styles lifted from shadcn/ui Dashboard block example https://ui.shadcn.com/blocks */}
             {/* FUTURE ENHANCEMENT: only show filters once source api data has loaded */}
             <div className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:px-6">
+              {/* BOT DETECTION CARD */}
+              <Card className="@container/card">
+                <CardHeader className="relative">
+                  <CardTitle className="@[250px]/card:text-xl text-xl font-semibold tabular-nums">
+                    Bot Detection Filter
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <MultiSelect
+                    options={[
+                      { value: "yes", label: "Bot-generated" },
+                      { value: "no", label: "Human-like" },
+                    ]}
+                    selected={selectedBotDetection}
+                    onChange={setSelectedBotDetection}
+                    placeholder="Select bot detection option..."
+                    emptyText="No selection found."
+                  />
+                </CardContent>
+              </Card>
               {/* AGE FILTER CARD */}
               <Card className="@container/card">
                 <CardHeader className="relative">

@@ -2,6 +2,32 @@
 // FUTURE ENHANCEMENT: add more types
 import { parse } from "papaparse";
 
+// GH Copilot assisted with the duplicate flag function for dev speed ⬇️
+interface SentenceObject {
+  q3_open: string;
+  has_duplicate_string?: boolean; // Optional key to indicate duplicates
+}
+
+const addDuplicateFlag = (arr: SentenceObject[]): SentenceObject[] => {
+  // Create a map to count occurrences of each sentence
+  const sentenceCount: Record<string, number> = {};
+
+  // Count each sentence
+  arr.forEach((obj) => {
+    const sentence = obj.q3_open; // Access the sentence
+    sentenceCount[sentence] = (sentenceCount[sentence] || 0) + 1;
+  });
+
+  // Add the boolean key based on the count
+  return arr.map((obj) => {
+    const sentence = obj.q3_open;
+    return {
+      ...obj,
+      has_duplicate_string: sentenceCount[sentence] > 1 ? "yes" : "no", // true if there is a duplicate
+    };
+  });
+};
+
 const fetchData = async () => {
   try {
     const response = await fetch("/data/us_ai_survey_unique_50.csv");
@@ -22,7 +48,7 @@ const fetchData = async () => {
             d.age_group = `${d.age_group}-${d.age_group + 9}`;
             return d;
           });
-          resolve(resultsAgeGrouped);
+          resolve(addDuplicateFlag(resultsAgeGrouped));
         },
         error: (error: unknown) => {
           reject(error);
@@ -42,6 +68,11 @@ export const fetchSurveyResponses = (filters) => {
       // filter source data based on any filters
       const filteredData = data.filter((response) => {
         if (filters) {
+          // bot detection filter
+          const matchesBotDetection =
+            filters.botDetection && filters.botDetection.length > 0
+              ? filters.botDetection.includes(response.has_duplicate_string)
+              : true;
           // age filter
           const matchesAgeGroup =
             filters.ageGroup && filters.ageGroup.length > 0
@@ -53,7 +84,7 @@ export const fetchSurveyResponses = (filters) => {
               ? filters.gender.includes(response.gender)
               : true;
           // return matches
-          return matchesAgeGroup && matchesGender;
+          return matchesBotDetection && matchesAgeGroup && matchesGender;
         } else {
           return true;
         }
