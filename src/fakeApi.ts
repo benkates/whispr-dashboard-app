@@ -35,11 +35,30 @@ const fetchData = async () => {
   }
 };
 
-export const fetchSurveyResponses = () => {
+export const fetchSurveyResponses = (filters) => {
   return new Promise((resolve) => {
     setTimeout(async () => {
       const data = await fetchData();
-      resolve(data);
+      // filter source data based on any filters
+      const filteredData = data.filter((response) => {
+        if (filters) {
+          // age filter
+          const matchesAgeGroup =
+            filters.ageGroup && filters.ageGroup.length > 0
+              ? filters.ageGroup.includes(response.age_group)
+              : true;
+          // gender filter
+          const matchesGender =
+            filters.gender && filters.gender.length > 0
+              ? filters.gender.includes(response.gender)
+              : true;
+          // return matches
+          return matchesAgeGroup && matchesGender;
+        } else {
+          return true;
+        }
+      });
+      resolve(filteredData);
     }, 250); // simulate network delay
   });
 };

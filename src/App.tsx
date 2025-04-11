@@ -57,6 +57,19 @@ function App() {
     loadInitData();
   }, []);
 
+  // filter survey responses based on selected filters (in dependency array)
+  useEffect(() => {
+    const loadFilteredData = async () => {
+      const filteredResponses = await fetchSurveyResponses({
+        gender: selectedGender,
+        ageGroup: selectedAgeGroup,
+      });
+      setResponses(filteredResponses);
+    };
+
+    loadFilteredData();
+  }, [selectedGender, selectedAgeGroup]);
+
   return (
     <>
       <div className="flex flex-1 flex-col">
