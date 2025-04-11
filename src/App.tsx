@@ -24,6 +24,10 @@ function App() {
   const [selectedAgeGroupOptions, setSelectedAgeGroupOptions] =
     useState<object[]>(INIT_OPTIONS);
 
+  const [selectedGeoState, setSelectedGeoState] = useState<string[]>([]);
+  const [selectedGeoStateOptions, setSelectedGeoStateOptions] =
+    useState<object[]>(INIT_OPTIONS);
+
   const [selectedGender, setSelectedGender] = useState<string[]>([]);
   const [genderFilterOptions, setGenderFilterOptions] =
     useState<object[]>(INIT_OPTIONS);
@@ -34,6 +38,19 @@ function App() {
       const ageGroupInit = await getUniqueValues("age_group");
       setSelectedAgeGroupOptions(
         ageGroupInit
+          .map((d) => {
+            return {
+              value: d,
+              label: d,
+            };
+          })
+          .sort((a, b) => a.value.localeCompare(b.value))
+      );
+
+      // set state filter unique values (sort alpha)
+      const geoStateInit = await getUniqueValues("state");
+      setSelectedGeoStateOptions(
+        geoStateInit
           .map((d) => {
             return {
               value: d,
@@ -69,13 +86,19 @@ function App() {
       const filteredResponses = await fetchSurveyResponses({
         botDetection: selectedBotDetection,
         ageGroup: selectedAgeGroup,
+        geoState: selectedGeoState,
         gender: selectedGender,
       });
       setResponses(filteredResponses);
     };
 
     loadFilteredData();
-  }, [selectedBotDetection, selectedAgeGroup, selectedGender]);
+  }, [
+    selectedBotDetection,
+    selectedAgeGroup,
+    selectedGeoState,
+    selectedGender,
+  ]);
 
   return (
     <>
@@ -119,6 +142,24 @@ function App() {
                     selected={selectedAgeGroup}
                     onChange={setSelectedAgeGroup}
                     placeholder="Select age group..."
+                    emptyText="No selection found."
+                  />
+                </CardContent>
+              </Card>
+              {/* STATE FILTER CARD */}
+              <Card className="@container/card">
+                <CardHeader className="relative">
+                  <CardTitle className="@[250px]/card:text-xl text-xl font-semibold tabular-nums">
+                    Geographic State Filter
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <MultiSelect
+                    // @ts-expect-error quick fix
+                    options={selectedGeoStateOptions}
+                    selected={selectedGeoState}
+                    onChange={setSelectedGeoState}
+                    placeholder="Select responder state..."
                     emptyText="No selection found."
                   />
                 </CardContent>

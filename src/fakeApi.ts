@@ -78,13 +78,23 @@ export const fetchSurveyResponses = (filters) => {
             filters.ageGroup && filters.ageGroup.length > 0
               ? filters.ageGroup.includes(response.age_group)
               : true;
+          // geo state filter
+          const matchesGeoState =
+            filters.geoState && filters.geoState.length > 0
+              ? filters.geoState.includes(response.state)
+              : true;
           // gender filter
           const matchesGender =
             filters.gender && filters.gender.length > 0
               ? filters.gender.includes(response.gender)
               : true;
           // return matches
-          return matchesBotDetection && matchesAgeGroup && matchesGender;
+          return (
+            matchesBotDetection &&
+            matchesAgeGroup &&
+            matchesGeoState &&
+            matchesGender
+          );
         } else {
           return true;
         }
