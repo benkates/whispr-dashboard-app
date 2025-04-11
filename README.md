@@ -18,6 +18,11 @@ In the interest of time, the following decisions were made:
 - `shadcn/ui` components use default component styling
 - No Tailwind implementation of design spec from Figma document
 - ApexCharts vs. a custom d3.js approach (allow for more customization)
+  - The visualization choices are explained in the Figma document's comments. ApexCharts allowed for an easy implementation of these.
+
+### GitHub Copilot
+
+GitHub Copilot was used for small, repeatable coding tasks and is otherwise noted in the comments when it was used. It was not used for large development tasks or architecture decisions.
 
 ### Note about `shadcn/ui`
 
