@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
 import "./App.css";
 import { fetchSurveyResponses, getUniqueValues } from "./fakeApi";
 import { MultiSelect } from "@/components/ui/combobox-multi";
+import { StackedBarChart } from "./components/stacked-bar-chart";
 
 const INIT_OPTIONS = [
   { value: "apple", label: "Apple" },
@@ -118,8 +119,8 @@ function App() {
             <div className="px-4 lg:px-6">
               {responses.length > 0 && (
                 <Card className="w-full p-4">
-                  {JSON.stringify(responses)}
                   <h2>Question 2</h2>
+                  <StackedBarChart data={responses} questionId="q2_rating" />
                   <hr />
                   <h3>Question 3</h3>
                 </Card>
