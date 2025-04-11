@@ -28,7 +28,7 @@ GitHub Copilot was used for small, repeatable coding tasks and is otherwise note
 
 `[shadcn/ui](https://ui.shadcn.com/)` is a collection of components built on top of Radix UI and Tailwind CSS. It provides a set of accessible and responsive pre-designed components that can be easily customized and used in a React applications. `src/components/ui` contains the generated components.
 
-\*\*You can check out examples of my custom CSS/HTML/component work [on my portfolio](https://benkates.com/).
+**You can check out examples of my custom CSS/HTML/component work [on my portfolio](https://benkates.com/).**
 
 ## Technical Implementation
 
