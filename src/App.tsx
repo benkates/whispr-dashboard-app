@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
 import "./App.css";
+import { fetchSurveyResponses } from "./fakeApi";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [responses, setResponses] = useState([]);
+
+  useEffect(() => {
+    const loadInitData = async () => {
+      // get survey responses
+      const initialResponses = await fetchSurveyResponses();
+      setResponses(initialResponses);
+    };
+    loadInitData();
+  }, []);
 
   return (
     <>
@@ -33,12 +43,14 @@ function App() {
               </Card>
             </div>
             <div className="px-4 lg:px-6">
-              {" "}
-              <Card className="w-full p-4">
-                <h2>Question 2</h2>
-                <hr />
-                <h3>Question 3</h3>
-              </Card>
+              {responses.length > 0 && (
+                <Card className="w-full p-4">
+                  {JSON.stringify(responses)}
+                  <h2>Question 2</h2>
+                  <hr />
+                  <h3>Question 3</h3>
+                </Card>
+              )}
             </div>
           </div>
         </div>
