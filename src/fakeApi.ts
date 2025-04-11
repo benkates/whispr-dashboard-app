@@ -43,3 +43,14 @@ export const fetchSurveyResponses = () => {
     }, 250); // simulate network delay
   });
 };
+
+// get unique values for filters
+export const getUniqueValues = (field: string) => {
+  return new Promise((resolve) => {
+    setTimeout(async () => {
+      const data = await fetchData();
+      const uniqueValues = [...new Set(data.map((item) => item[field]))];
+      resolve(uniqueValues);
+    }, 250); // simulate network delay
+  });
+};
