@@ -1,13 +1,55 @@
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
 import "./App.css";
-import { fetchSurveyResponses } from "./fakeApi";
+import { fetchSurveyResponses, getUniqueValues } from "./fakeApi";
+import { MultiSelect } from "@/components/ui/combobox-multi";
+
+const INIT_OPTIONS = [
+  { value: "apple", label: "Apple" },
+  { value: "banana", label: "Banana" },
+  { value: "cherry", label: "Cherry" },
+];
 
 function App() {
   const [responses, setResponses] = useState([]);
 
+  // FUTURE ENHANCEMENT: replace basic state management with redux toolkit
+  const [selectedAgeGroup, setSelectedAgeGroup] = useState<string[]>([]);
+  const [selectedAgeGroupOptions, setSelectedAgeGroupOptions] =
+    useState<object[]>(INIT_OPTIONS);
+
+  const [selectedGender, setSelectedGender] = useState<string[]>([]);
+  const [genderFilterOptions, setGenderFilterOptions] =
+    useState<object[]>(INIT_OPTIONS);
+
   useEffect(() => {
     const loadInitData = async () => {
+      // set age group filter unique values (sort alpha)
+      const ageGroupInit = await getUniqueValues("age_group");
+      setSelectedAgeGroupOptions(
+        ageGroupInit
+          .map((d) => {
+            return {
+              value: d,
+              label: d,
+            };
+          })
+          .sort((a, b) => a.value.localeCompare(b.value))
+      );
+
+      // set gender filter unique values (sort alpha)
+      const genderInit = await getUniqueValues("gender");
+      setGenderFilterOptions(
+        genderInit
+          .map((d) => {
+            return {
+              value: d,
+              label: d,
+            };
+          })
+          .sort((a, b) => a.value.localeCompare(b.value))
+      );
+
       // get survey responses
       const initialResponses = await fetchSurveyResponses();
       setResponses(initialResponses);
@@ -30,7 +72,16 @@ function App() {
                     Age Group Filter
                   </CardTitle>
                 </CardHeader>
-                <CardContent></CardContent>
+                <CardContent>
+                  <MultiSelect
+                    // @ts-expect-error quick fix
+                    options={selectedAgeGroupOptions}
+                    selected={selectedAgeGroup}
+                    onChange={setSelectedAgeGroup}
+                    placeholder="Select age group..."
+                    emptyText="No selection found."
+                  />
+                </CardContent>
               </Card>
               {/* GENDER FILTER CARD */}
               <Card className="@container/card">
@@ -39,7 +90,16 @@ function App() {
                     Gender Filter
                   </CardTitle>
                 </CardHeader>
-                <CardContent></CardContent>
+                <CardContent>
+                  <MultiSelect
+                    // @ts-expect-error quick fix
+                    options={genderFilterOptions}
+                    selected={selectedGender}
+                    onChange={setSelectedGender}
+                    placeholder="Select gender..."
+                    emptyText="No selection found."
+                  />
+                </CardContent>
               </Card>
             </div>
             <div className="px-4 lg:px-6">
