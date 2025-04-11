@@ -47,7 +47,7 @@ export const StackedBarChart = ({ data, questionId }) => {
         },
       },
       xaxis: {
-        categories: [questionId],
+        categories: [""],
       },
       fill: {
         opacity: 1,

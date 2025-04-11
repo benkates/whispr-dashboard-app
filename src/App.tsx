@@ -105,6 +105,16 @@ function App() {
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+            <h1 className="text-left text-4xl font-bold text-gray-800 leading-tight ">
+              Whispr Dashboard
+            </h1>
+            <p className="text-left text-gray-400">
+              Qui deserunt dolor et id ipsum laboris. Ut laborum deserunt eu
+              aliqua veniam minim mollit non mollit ullamco culpa nostrud est.
+              Fugiat quis ea elit ullamco excepteur ipsum anim aliquip ipsum ad
+              excepteur. Magna consectetur Lorem ut excepteur esse irure tempor
+              ex commodo voluptate.
+            </p>
             {/* parent styles lifted from shadcn/ui Dashboard block example https://ui.shadcn.com/blocks */}
             {/* FUTURE ENHANCEMENT: only show filters once source api data has loaded */}
             <div className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-4 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:px-6">
@@ -183,13 +193,16 @@ function App() {
                 </CardContent>
               </Card>
             </div>
+            <h2 className="text-2xl font-bold text-center">
+              {responses.length} responses
+            </h2>
             <div className="px-4 lg:px-6">
               {responses.length > 0 && (
                 <Card className="w-full p-4">
-                  <h2>Question 2</h2>
+                  <h3 className="text-lg font-bold">Question 2</h3>
                   <StackedBarChart data={responses} questionId="q2_rating" />
                   <hr />
-                  <h3>Question 3</h3>
+                  <h3 className="text-lg font-bold">Question 3</h3>
                   <VerticalBarChart data={responses} questionId="q3_open" />
                 </Card>
               )}
