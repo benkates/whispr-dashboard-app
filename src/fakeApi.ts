@@ -88,12 +88,19 @@ export const fetchSurveyResponses = (filters) => {
             filters.gender && filters.gender.length > 0
               ? filters.gender.includes(response.gender)
               : true;
+          // education level filter
+          const matchesEducationLevel =
+            filters.educationLevel && filters.educationLevel.length > 0
+              ? filters.educationLevel.includes(response.education_level)
+              : true;
+
           // return matches
           return (
             matchesBotDetection &&
             matchesAgeGroup &&
             matchesGeoState &&
-            matchesGender
+            matchesGender &&
+            matchesEducationLevel
           );
         } else {
           return true;
